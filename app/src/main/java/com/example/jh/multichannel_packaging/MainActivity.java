@@ -12,6 +12,19 @@ import android.widget.Toast;
 
 /**
  * 本demo练习多渠道打包！
+ * 以友盟统计为例，(也可以百度统计多渠道打包)
+ * 在AndroidManifest.xml文件中声明channel信息，如下。
+ *
+ * <meta-data
+ * android:name="UMENG_APPKEY"
+ * android:value="产品的APPKEY" />
+ * <meta-data
+ * android:name="UMENG_CHANNEL"
+ * android:value="${UMENG_CHANNEL_VALUE}" />
+ *
+ * 生成realease版本的apk：
+ * 紧接着在命令行Terminal输入如下命令：（AS已经将命令行Terminal集成到了软件当中）
+ * gradlew assembleRelease
  */
 public class MainActivity extends AppCompatActivity {
 

@@ -10,13 +10,95 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        multiDexEnabled true // 突破应用方法数65535的一个限制
+        manifestPlaceholders = [UMENG_CHANNEL_VALUE: "umeng"]
+
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+    // 将signingConfigs方法放在buildTypes方法之前即可正常运行
+    signingConfigs{
+        // debug版
+        debug{}
+        // 为我们的release包添加签名文件配置
+        release{
+            storeFile file("MyApp.jks")
+            storePassword "123456"
+            keyAlias "key"
+            keyPassword "123456"
         }
     }
+
+    buildTypes {
+        release {
+            minifyEnabled false       // 置为true，即代码混淆！
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            // 发布release需要指定签名文件
+            signingConfig signingConfigs.release
+            // 指定我们的release包的输出文件名就是我们的渠道名字
+            
+        }
+
+
+        // 3、最后可以 在android节点下的buildTypes节点下指定输出APK的文件名。
+        // 比如要输出文件名格式为“ipgw_4.2.5_fir.apk”，其中，ipgw为产品名称，4.2.5为版本名称，fir为渠道名称，各部分之间用下划线分割。
+        applicationVariants.all {
+            variant ->
+                variant.outputs.each {
+                    output ->
+                        def outFile = output.outputFile
+                        if (outFile != null && outFile.name.endsWith(".apk")) {
+                            // 慕课网是这么写的：
+                              def fileName = "${variant.productFlavors[0].name}" + ".apk"
+                             output.outputFile = new File(outFile.parent, fileName)
+//                            def fileName = "ipgw_4.2.5_${variant.productFlavors[0].name.replaceAll("_", "")}.apk"
+//                            output.outputFile = new File(outFile.parent, fileName)
+                        }
+                }
+        }
+    }
+
+    // 2、在主module下的build.gradle文件中android节点下配置productFlavors，如下。
+    productFlavors {
+//        fir {
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "fir"]
+//        }
+//        _360 {
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "360"]
+//        }
+//        baidu {
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "baidu"]
+//        }
+//        _91 {
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "91"]
+//        }
+//        hiapk {
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "hiapk"]
+//        }
+//        tqq {
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "tqq"]
+//        }
+//        wandoujia {
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "wandoujia"]
+//        }
+//        xiaomi {
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "xiaomi"]
+//            // 可以进行包名的更改
+//            // resValue "string", "app_name", "xiaomi_app"
+//            // (如果出现build fail 是因为app_name重复就可以暂时将string资源里面app_name注释掉)
+//        }
+        // 同时可以进行节点的测试，下面是举例子说明
+        okhttp{
+            applicationIdSuffix "okhttp"
+            resValue "string", "app_name", "okhttp"
+        }
+        jpush{
+            applicationIdSuffix "jpush"
+            resValue "string", "app_name", "jpush"
+        }
+
+    }
+
 }
 
 dependencies {
@@ -28,4 +110,7 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:design:25.3.1'
     testCompile 'junit:junit:4.12'
+
+    // 友盟第三方包
+    compile 'com.umeng.analytics:analytics:latest.integration'
 }
