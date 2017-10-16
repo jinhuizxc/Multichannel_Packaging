@@ -24,7 +24,7 @@ android {
         release{
             storeFile file("MyApp.jks")
             storePassword "123456"
-            keyAlias "key"
+            keyAlias "myapp"
             keyPassword "123456"
         }
     }
@@ -40,7 +40,7 @@ android {
         }
 
 
-        // 3、最后可以 在android节点下的buildTypes节点下指定输出APK的文件名。
+        // 4、最后可以 在android节点下的buildTypes节点下指定输出APK的文件名。
         // 比如要输出文件名格式为“ipgw_4.2.5_fir.apk”，其中，ipgw为产品名称，4.2.5为版本名称，fir为渠道名称，各部分之间用下划线分割。
         applicationVariants.all {
             variant ->
@@ -58,7 +58,7 @@ android {
         }
     }
 
-    // 2、在主module下的build.gradle文件中android节点下配置productFlavors，如下。
+    // 3、在主module下的build.gradle文件中android节点下配置productFlavors，如下。
     productFlavors {
 //        fir {
 //            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "fir"]

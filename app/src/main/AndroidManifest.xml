@@ -3,7 +3,7 @@
     package="com.example.jh.multichannel_packaging">
 
 
-    <!--添加友盟必需权限-->
+    <!--1.添加友盟必需权限-->
     <!--检测联网方式，区分用户设备使用的是2G、3G或是WiFi-->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <!--获取用户设备的mac地址，在平板设备上，无法通过imei标示设备，我们会将mac地址作为用户的唯一标识-->
@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
 
-        <!--1、在AndroidManifest.xml文件中声明channel信息-->
+        <!--2、在AndroidManifest.xml文件中声明channel信息-->
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="594b2b6065b6d64d8a00103f" />
